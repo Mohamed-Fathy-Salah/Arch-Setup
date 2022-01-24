@@ -118,9 +118,9 @@ static Key keys[] = {
 	//{ MODKEY|ShiftMask,	XK_Print,	spawn,		SHCMD("dmenurecord kill") },
 	//{ MODKEY,			XK_Delete,	spawn,		SHCMD("dmenurecord kill") },
 
-	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl -- set-sink-volume 0 +10") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pactl -- set-sink-volume 0 -10") },
 	{ 0, XF86XK_AudioPrev,	        spawn,	   SHCMD("mpc prev") },
 	{ 0, XF86XK_AudioNext,	        spawn,	   SHCMD("mpc next") },
 	{ 0, XF86XK_AudioPause,	        spawn,	   SHCMD("mpc pause") },
