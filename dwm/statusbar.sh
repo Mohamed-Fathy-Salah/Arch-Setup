@@ -6,7 +6,7 @@ get_date() {
 }
 
 get_time() {
-    time="$(date "+%H:%M")"
+    time="$(date "+%I:%M %p")"
     echo -ne "  ${time} "
 }
 
@@ -16,7 +16,11 @@ get_wifi() {
 }
 
 get_language(){
-    setxkbmap -query | awk '/layout/ {print $2}'
+    case "$(xset -q|grep LED| awk '{ print $10 }')" in
+        "00000000") echo -ne "en" ;;
+        "00001004") echo -ne "ar" ;;
+        *) echo -ne "un" ;;
+    esac
 }
 
 get_volume() {
