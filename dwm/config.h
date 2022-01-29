@@ -6,9 +6,10 @@ static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]    = {"monospace:size=14"};
+static const char *fonts[]    = { "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true",
+                                  "Amiri:pixelsize=16:antialias=true:autohint=true"};
 
-static const char dmenufont[] = "monospace:size=14";
+static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16";
 static const char normfgcolor[]      = "#ebdbb2";
 static const char normbgcolor[]      = "#282828";
 static const char normbordercolor[]  = "#928374";
@@ -116,8 +117,10 @@ static Key keys[] = {
 	{ MODKEY,			            XK_e,	   zoom,		   {0} },
 	//{ MODKEY|ShiftMask,	XK_f,	togglefloating,	{0} },
 
-	{ 0,				            XK_Print,  spawn,	       SHCMD("maim Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maimpick") },
+	{ 0,				            XK_Print,  spawn,	       SHCMD("maim ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
+	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -s ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ControlMask,	                XK_Print,  spawn,		   SHCMD("maim -s | xclip -selection clipboard -t image/png") },
+	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
 	//{ MODKEY,			XK_Print,	spawn,		SHCMD("dmenurecord") },
 	//{ MODKEY|ShiftMask,	XK_Print,	spawn,		SHCMD("dmenurecord kill") },
 	//{ MODKEY,			XK_Delete,	spawn,		SHCMD("dmenurecord kill") },
@@ -153,16 +156,20 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	//{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	//{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	//{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+	//{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+	//{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkStatusText,        0,              Button4,        shiftview,      { .i = +1 } },
+	{ ClkStatusText,        0,              Button5,        shiftview,      { .i = -1 } },
+	{ ClkClientWin,         MODKEY,         Button4,        shifttag,       { .i = +1 } },
+	{ ClkClientWin,         MODKEY,         Button5,        shifttag,       { .i = -1 } },
 };
 

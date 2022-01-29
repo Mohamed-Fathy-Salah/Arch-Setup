@@ -23,15 +23,14 @@ get_volume() {
 
 while true
 do
-    DATE="  $(date "+%a %d %b") "
-    TIME="  $(date "+%I:%M %p") "
+    DATE_TIME=$(date "+ %a %d %b  ▎  ⌚ %I:%M %p")
     MEM=$(free -h --kilo | awk '/^Mem:/ {print $3 "/" $2}')
     CPU=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}' )
     TEMP=$(sensors|grep 'Core 0'|awk '{print $3}' )
-    NET=$( awk '/wlan0/ {i++; rx[i]=$2; tx[i]=$10}; END{printf "▼ %.1f KB - ▲ %.1f KB" ,(rx[2]-rx[1])/1024 , (tx[2]-tx[1])/1024 }' <(cat /proc/net/dev; sleep 1; cat /proc/net/dev))
+    NET=$( awk '/wlan0/ {i++; rx[i]=$2; tx[i]=$10}; END{printf "▼ %.1f KB ▣ ▲ %.1f KB" ,(rx[2]-rx[1])/1024 , (tx[2]-tx[1])/1024 }' <(cat /proc/net/dev; sleep 1; cat /proc/net/dev))
     BAT=$(cat /sys/class/power_supply/BAT0/capacity)
 
-    xsetroot -name "$DATE  |  $TIME  |  $(get_volume)  |   $MEM  |   $CPU%  |   $TEMP  |  $(get_language)  |  $NET  |  $BAT% "
+    xsetroot -name "$DATE_TIME  ▎  $(get_volume)  ▎   $MEM  ▎    $CPU%  ▎   $TEMP  ▎ $(get_language) ▎  $NET  ▎ $BAT% "
 
     sleep 2
 done &
