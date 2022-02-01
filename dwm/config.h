@@ -2,14 +2,16 @@
 #include <X11/XF86keysym.h>
 #define TERMINAL "st"
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]    = { "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true",
-                                  "Amiri:pixelsize=16:antialias=true:autohint=true"};
+static const char *fonts[]    = {
+    "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true" ,
+    "Noto Naskh Arabic:pixelsize=16:antialias=true:autohint=true"
+};
 
-static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16";
+static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true";
 static const char normfgcolor[]      = "#ebdbb2";
 static const char normbgcolor[]      = "#282828";
 static const char normbordercolor[]  = "#928374";
@@ -24,7 +26,7 @@ static const char *colors[][3]       = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5"};
+static const char *tags[] = { "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ"};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -44,7 +46,7 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "  ",      tile },    /* first entry is default */
-	{ "|M|",      centeredmaster },
+	{ " ",      centeredmaster },
 	{ "  ",      NULL },    /* no layout function means floating behavior */
 };
 
@@ -53,7 +55,8 @@ static const Layout layouts[] = {
 #define ALT Mod1Mask
 
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY,                    KEY,      view,            {.ui = 1 << TAG} }, \
+	{ MODKEY|ALT,                KEY,      tag,             {.ui = 1 << TAG} }, \
 
 
 #define STACKKEYS(MOD,ACTION) \
@@ -63,8 +66,8 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", selfgcolor, "-sb", selfgcolor, "-sf", selfgcolor, NULL };
+static char dmenumon[2] = "0";
+static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 
 static const char *termcmd[]  = { "st", NULL };
 
@@ -78,18 +81,13 @@ static Key keys[] = {
 	TAGKEYS(		    	        XK_3,	   2)
 	TAGKEYS(		    	        XK_4,	   3)
 	TAGKEYS(		            	XK_5,	   4)
-	TAGKEYS(		            	XK_6,	   5)
-	TAGKEYS(		            	XK_7,	   6)
-	TAGKEYS(		            	XK_8,	   7)
-	TAGKEYS(		            	XK_9,	   8)
 
 	{ MODKEY,		            	XK_q,	   killclient,     {0} },
 	{ MODKEY|ALT,               	XK_q,	   spawn,          SHCMD("sysact") },
-	{ MODKEY,		            	XK_1,	   spawn,          SHCMD("firefox") },
-	{ MODKEY,		    	        XK_2,	   spawn,          SHCMD("code") },
-    
+	{ MODKEY,		            	XK_w,	   spawn,          SHCMD("firefox") },
+	{ MODKEY,		    	        XK_c,	   spawn,          SHCMD("code") },
+	{ MODKEY,		    	        XK_v,	   spawn,          SHCMD(TERMINAL " -e vim") },
 	{ MODKEY,		            	XK_f,	   spawn,          SHCMD(TERMINAL " -e lf") },
-
 	{ MODKEY,          	            XK_s,      spawn,          SHCMD(TERMINAL " -e htop") },
 
 	{ MODKEY|ALT,			        XK_t,	   setlayout,      {.v = &layouts[0]} }, /* tile */
@@ -103,7 +101,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_i,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_u,      setmfact,       {.f = -0.05} },
 
-	{ MODKEY,			            XK_d,	   spawn,          SHCMD("dmenu_run") },
+	{ MODKEY,			            XK_d,	   spawn,          {.v = dmenucmd} },
 
 	{ MODKEY,			            XK_j,	   shiftview,      { .i = -1 } },
 	{ MODKEY,			            XK_k,	   shiftview,      { .i = +1 } },
@@ -117,10 +115,14 @@ static Key keys[] = {
 	{ MODKEY,			            XK_e,	   zoom,		   {0} },
 	//{ MODKEY|ShiftMask,	XK_f,	togglefloating,	{0} },
 
-	{ 0,				            XK_Print,  spawn,	       SHCMD("maim ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
-	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -s ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ControlMask,	                XK_Print,  spawn,		   SHCMD("maim -s | xclip -selection clipboard -t image/png") },
-	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
+	//{ 0,				            XK_Print,  spawn,	       SHCMD("maim ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
+	//{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
+	{ 0,				            XK_Print,  spawn,	       SHCMD("maim ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -s ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ControlMask,				    XK_Print,  spawn,	       SHCMD("maim | xclip -selection clipboard -t image/png") },
+	{ ControlMask|ShiftMask,	    XK_Print,  spawn,		   SHCMD("maim -s | xclip -selection clipboard -t image/png") },
+	{ ControlMask|ALT,      		XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") },
 	//{ MODKEY,			XK_Print,	spawn,		SHCMD("dmenurecord") },
 	//{ MODKEY|ShiftMask,	XK_Print,	spawn,		SHCMD("dmenurecord kill") },
 	//{ MODKEY,			XK_Delete,	spawn,		SHCMD("dmenurecord kill") },
