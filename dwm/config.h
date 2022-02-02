@@ -65,7 +65,6 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-#define STATUSBAR "dwmblocks"
 
 static char dmenumon[2] = "0";
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
@@ -90,6 +89,8 @@ static Key keys[] = {
 	{ MODKEY,		    	        XK_v,	   spawn,          SHCMD(TERMINAL " -e vim") },
 	{ MODKEY,		            	XK_f,	   spawn,          SHCMD(TERMINAL " -e lf") },
 	{ MODKEY,          	            XK_s,      spawn,          SHCMD(TERMINAL " -e htop") },
+
+	{ MODKEY,          	            XK_space,  spawn,          SHCMD("kill -42 $(pidof dwmblocks)") },
 
 	{ MODKEY|ALT,			        XK_t,	   setlayout,      {.v = &layouts[0]} }, /* tile */
 	{ MODKEY|ALT,			        XK_c,	   setlayout,      {.v = &layouts[1]} }, /* centeredmaster */
@@ -128,9 +129,9 @@ static Key keys[] = {
 	//{ MODKEY|ShiftMask,	XK_Print,	spawn,		SHCMD("dmenurecord kill") },
 	//{ MODKEY,			XK_Delete,	spawn,		SHCMD("dmenurecord kill") },
 
-	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle && kill-40 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl -- set-sink-volume 0 +5% && kill-40 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pactl -- set-sink-volume 0 -5% && kill-40 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle && kill -40 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl -- set-sink-volume 0 +5% && kill -40 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pactl -- set-sink-volume 0 -5% && kill -40 $(pidof dwmblocks)") },
 	{ 0, XF86XK_AudioPrev,	        spawn,	   SHCMD("mpc prev") },
 	{ 0, XF86XK_AudioNext,	        spawn,	   SHCMD("mpc next") },
 	{ 0, XF86XK_AudioPause,	        spawn,	   SHCMD("mpc pause") },
@@ -171,7 +172,7 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkTagBar,            0,              Button4,        shiftview,      { .i = +1 } },
-	{ ClkStatusText,        0,              Button5,        shiftview,      { .i = -1 } },
+	{ ClkTagBar,            0,              Button5,        shiftview,      { .i = -1 } },
 	{ ClkClientWin,         MODKEY,         Button4,        shifttag,       { .i = +1 } },
 	{ ClkClientWin,         MODKEY,         Button5,        shifttag,       { .i = -1 } },
 };
