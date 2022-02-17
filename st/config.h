@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "SauceCodePro Nerd Font:pixelsize=23:antialias=true:autohint=true";
+static char *font = "SauceCodePro Nerd Font:pixelsize=20:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -95,7 +95,7 @@ unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-  /* 8 normal colors */
+	/* 8 normal colors */
   [0] = "#282828", /* hard contrast: #1d2021 / soft contrast: #32302f */
   [1] = "#cc241d", /* red     */
   [2] = "#98971a", /* green   */
@@ -105,12 +105,12 @@ static const char *colorname[] = {
   [6] = "#689d6a", /* cyan    */
   [7] = "#a89984", /* white   */
 
-  /* 8 bright colors */
+	/* 8 bright colors */
   [8]  = "#928374", /* black   */
   [9]  = "#fb4934", /* red     */
   [10] = "#b8bb26", /* green   */
   [11] = "#fabd2f", /* yellow  */
-  [12] = "#3281e1", /* blue    */
+  [12] = "#83a598", /* blue    */
   [13] = "#d3869b", /* magenta */
   [14] = "#8ec07c", /* cyan    */
   [15] = "#ebdbb2", /* white   */
@@ -177,6 +177,12 @@ static MouseShortcut mshortcuts[] = {
 
 static Shortcut shortcuts[] = {
 	/* mask                 keysym          function        argument */
+	{ TERMMOD,              XK_KP_Subtract, zoom,           {.f = -1} },
+	{ TERMMOD,              XK_KP_Add,      zoom,           {.f = +1} },
+	{ TERMMOD,              XK_equal,       zoomreset,      {.f =  0} },
+	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
+	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
+	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 };
 
 /*
