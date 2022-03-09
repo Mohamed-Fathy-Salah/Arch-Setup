@@ -11,7 +11,7 @@ static const char *fonts[]    = {
     "Noto Naskh Arabic:pixelsize=16:antialias=true:autohint=true"
 };
 
-static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true";
+//static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true";
 static const char normfgcolor[]      = "#ebdbb2";
 static const char normbgcolor[]      = "#282828";
 //static const char normbgcolor[]      = "#000000";
@@ -38,7 +38,10 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "firefox",  NULL,       NULL,       1 << 0,       0,           0 },
+	{ "Code"   ,  NULL,       NULL,       1 << 1,       0,           0 },
+	{ "Blender",  NULL,       NULL,       1 << 2,       0,           0 },
+	{ "discord",  NULL,       NULL,       1 << 3,       0,           0 }
 };
 
 /* layout(s) */
@@ -49,8 +52,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
+
 	{ "  ",      tile },    /* first entry is default */
-	{ " ",      centeredmaster },
+	{ " ",      bstack },
 	{ "  ",      NULL },    /* no layout function means floating behavior */
 };
 
@@ -70,8 +74,11 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#define STATUSBAR "dwmblocks"
+
 static char dmenumon[2] = "0";
-static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+//static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = { "dmenu_run"};
 
 static const char *termcmd[]  = { "st", NULL };
 
@@ -88,18 +95,19 @@ static Key keys[] = {
 	{ MODKEY,		            	XK_q,	   killclient,     {0} },
 	{ MODKEY,		            	XK_w,	   spawn,          SHCMD("$BROWSER") },
 	{ MODKEY,		            	XK_t,	   spawn,          SHCMD("$BROWSER 'https://translate.google.com.eg/?hl=ar'") },
+	{ MODKEY,		            	XK_p,	   spawn,          SHCMD("$BROWSER \"$(xclip -o -selection clipboard)\"") },
 	//{ MODKEY,		            	XK_o,	   spawn,          SHCMD("$BROWSER 'https://calendar.google.com/calendar/u/0/r?pli=1'") },
-	{ MODKEY,		    	        XK_c,	   spawn,          SHCMD("code-oss") },
-	{ MODKEY,		    	        XK_v,	   spawn,          SHCMD(TERMINAL " -e vim") },
+	{ MODKEY,		    	        XK_c,	   spawn,          SHCMD("$CODE") },
+	{ MODKEY,		    	        XK_v,	   spawn,          SHCMD(TERMINAL " -e $EDITOR") },
 	{ MODKEY,		            	XK_f,	   spawn,          SHCMD(TERMINAL " -e lf") },
-	{ MODKEY,          	            XK_s,      spawn,          SHCMD(TERMINAL " -e htop") },
+	{ MODKEY,          	            XK_s,      spawn,          SHCMD(TERMINAL " -e sudo htop") },
 	{ MODKEY,                       XK_m,	   spawn,	       SHCMD(TERMINAL " -e ncmpcpp") },
 	{ MODKEY,		            	XK_o,	   spawn,          SHCMD(TERMINAL " -e calcurse") },
 
 	{ MODKEY,          	            XK_space,  spawn,          SHCMD("kill -42 $(pidof dwmblocks)") },
 
 	{ MODKEY|ALT,			        XK_t,	   setlayout,      {.v = &layouts[0]} }, /* tile */
-	{ MODKEY|ALT,			        XK_c,	   setlayout,      {.v = &layouts[1]} }, /* centeredmaster */
+	{ MODKEY|ALT,			        XK_b,	   setlayout,      {.v = &layouts[1]} }, /* bstack */
 	{ MODKEY|ALT,    		        XK_f,	   setlayout,      {.v = &layouts[2]} }, /* float */
 	{ MODKEY|ALT,			        XK_m,	   togglefullscr,  {0} },
 
@@ -111,6 +119,8 @@ static Key keys[] = {
 
 	{ MODKEY,	            		XK_Return, spawn,		   {.v = termcmd } },
 	{ MODKEY,			            XK_d,	   spawn,          {.v = dmenucmd} },
+
+	{ MODKEY|ALT,			        XK_q,	   spawn,          SHCMD("quit") },
 
 	{ MODKEY,			            XK_j,	   shiftview,      { .i = -1 } },
 	{ MODKEY,			            XK_k,	   shiftview,      { .i = +1 } },
@@ -130,17 +140,14 @@ static Key keys[] = {
 	{ ControlMask,				    XK_Print,  spawn,	       SHCMD("maim -u | xclip -selection clipboard -t image/png") },
 	{ ControlMask|ShiftMask,	    XK_Print,  spawn,		   SHCMD("maim -us | xclip -selection clipboard -t image/png") },
 	{ ControlMask|ALT,      		XK_Print,  spawn,		   SHCMD("maim -ui $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") },
-	//{ MODKEY,			XK_Print,	spawn,		SHCMD("dmenurecord") },
-	//{ MODKEY|ShiftMask,	XK_Print,	spawn,		SHCMD("dmenurecord kill") },
-	//{ MODKEY,			XK_Delete,	spawn,		SHCMD("dmenurecord kill") },
 
-	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle ; kill -40 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 +5% ; kill -40 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 -5% ; kill -40 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle;kill -40 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 +5%;kill -40 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 -5%;kill -40 $(pidof dwmblocks)") },
 
-	{ MODKEY, XF86XK_AudioMute,   	spawn,	   SHCMD("pactl set-source-mute 0 toggle ; kill -41 $(pidof dwmblocks)") },
-	{ MODKEY, XF86XK_AudioRaiseVolume,	spawn, SHCMD("pactl set-source-volume 0 +5% ; kill -41 $(pidof dwmblocks)") },
-	{ MODKEY, XF86XK_AudioLowerVolume,	spawn, SHCMD("pactl set-source-volume 0 -5% ; kill -41 $(pidof dwmblocks)") },
+	{ MODKEY, XF86XK_AudioMute,   	spawn,	   SHCMD("pactl set-source-mute 0 toggle;kill -41 $(pidof dwmblocks)") },
+	{ MODKEY, XF86XK_AudioRaiseVolume,	spawn, SHCMD("pactl set-source-volume 0 +5%;kill -41 $(pidof dwmblocks)") },
+	{ MODKEY, XF86XK_AudioLowerVolume,	spawn, SHCMD("pactl set-source-volume 0 -5%;kill -41 $(pidof dwmblocks)") },
 
 	{ 0, XF86XK_AudioPrev,	        spawn,	   SHCMD("mpc prev") },
 	{ 0, XF86XK_AudioNext,	        spawn,	   SHCMD("mpc next") },
@@ -150,11 +157,8 @@ static Key keys[] = {
 	{ MODKEY,XK_bracketright,   	spawn,	   SHCMD("mpc seek +10") },
 	//{ 0, XF86XK_PowerOff,	    	spawn,	   SHCMD("sysact") },
 	{ 0, XF86XK_Calculator,	    	spawn,	   SHCMD(TERMINAL " -e bc -ql") },
-	//{ 0, XF86XK_Sleep,	        	spawn,     SHCMD("sudo -A zzz") },
-	//{ 0, XF86XK_Mail,		spawn,		SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks") },
 	//{ 0, XF86XK_MyComputer,		    spawn,     SHCMD(TERMINAL " -e lf /") },
-	/* { 0, XF86XK_Battery,		spawn,		SHCMD("") }, */
-
+    
 	//{ 0, XF86XK_TouchpadToggle,	spawn,		SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
 	//{ 0, XF86XK_TouchpadOff,	spawn,		SHCMD("synclient TouchpadOff=1") },
 	//{ 0, XF86XK_TouchpadOn,		spawn,		SHCMD("synclient TouchpadOff=0") },
@@ -171,6 +175,10 @@ static Button buttons[] = {
 	//{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	//{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	//{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
+	{ ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
+	{ ClkStatusText,        0,              Button4,        sigstatusbar,   {.i = 4} },
+	{ ClkStatusText,        0,              Button5,        sigstatusbar,   {.i = 5} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
@@ -178,9 +186,7 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-	{ ClkTagBar,            0,              Button4,        shiftview,      { .i = +1 } },
-	{ ClkTagBar,            0,              Button5,        shiftview,      { .i = -1 } },
-	{ ClkClientWin,         MODKEY,         Button4,        shifttag,       { .i = +1 } },
-	{ ClkClientWin,         MODKEY,         Button5,        shifttag,       { .i = -1 } },
+	{ ClkClientWin,         ALT,            Button4,        shifttag,       { .i = +1 } },
+	{ ClkClientWin,         ALT,            Button5,        shifttag,       { .i = -1 } },
 };
 

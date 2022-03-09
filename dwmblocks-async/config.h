@@ -1,6 +1,6 @@
 #define CMDLENGTH 100
 #define DELIMITER " ┃ "
-//#define CLICKABLE_BLOCKS
+#define CLICKABLE_BLOCKS
 
 const Block blocks[] = {
 	BLOCK("sb-date",    0,    1),

@@ -178,6 +178,7 @@ static void focusin(XEvent *e);
 static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
+static pid_t getstatusbarpid();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
@@ -212,7 +213,7 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigchld(int unused);
-//static void sigstatusbar(const Arg *arg);
+static void sigstatusbar(const Arg *arg);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 //static void tagmon(const Arg *arg);
@@ -241,7 +242,8 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
-static void centeredmaster(Monitor *m);
+static void bstack(Monitor *m);
+//static void centeredmaster(Monitor *m);
 //static void centeredfloatingmaster(Monitor *m);
 static void shiftview(const Arg *arg);
 static void shifttag(const Arg *arg);
@@ -255,7 +257,7 @@ static const char broken[] = "broken";
 static char stext[256];
 static int statusw;
 static int statussig;
-//static pid_t statuspid = -1;
+static pid_t statuspid = -1;
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
@@ -440,7 +442,7 @@ buttonpress(XEvent *e)
 	Client *c;
 	Monitor *m;
 	XButtonPressedEvent *ev = &e->xbutton;
-    char *text,*s,ch;
+    char *text, *s, ch;
 
 	click = ClkRootWin;
 	/* focus monitor if necessary */
@@ -742,7 +744,7 @@ drawbar(Monitor *m)
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
-        char *text,*s,ch;
+        char *text, *s, ch;
 		drw_setscheme(drw, scheme[SchemeNorm]);
 
         x = 0;
@@ -932,7 +934,6 @@ getatomprop(Client *c, Atom prop)
 	return atom;
 }
 
-/*
 pid_t
 getstatusbarpid()
 {
@@ -950,13 +951,12 @@ getstatusbarpid()
                 return statuspid;
         }
     }
-    if (!(fp = popen("pidof -o "STATUSBAR, "r")))
+    if (!(fp = popen("pgrep -o "STATUSBAR, "r")))
         return -1;
     fgets(buf, sizeof(buf), fp);
     pclose(fp);
     return strtol(buf, NULL, 10);
 }
-*/
 
 int
 getrootptr(int *x, int *y)
@@ -1728,7 +1728,6 @@ sigchld(int unused)
 	while (0 < waitpid(-1, NULL, WNOHANG));
 }
 
-/*
 void
 sigstatusbar(const Arg *arg)
 {
@@ -1742,7 +1741,6 @@ sigstatusbar(const Arg *arg)
 
     sigqueue(statuspid, SIGRTMIN+statussig, sv);
 }
-*/
 
 void
 spawn(const Arg *arg)
@@ -2276,30 +2274,31 @@ main(int argc, char *argv[])
 	return EXIT_SUCCESS;
 }
 
+/*
 void
 centeredmaster(Monitor *m)
 {
 	unsigned int i, n, h, mw, mx, my, oty, ety, tw;
 	Client *c;
 
-	/* count number of clients in the selected monitor */
+	// count number of clients in the selected monitor
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
 	if (n == 0)
 		return;
 
-	/* initialize areas */
+	// initialize areas 
 	mw = m->ww;
 	mx = 0;
 	my = 0;
 	tw = mw;
 
 	if (n > m->nmaster) {
-		/* go mfact box in the center if more than nmaster clients */
+		// go mfact box in the center if more than nmaster clients 
 		mw = m->nmaster ? m->ww * m->mfact : 0;
 		tw = m->ww - mw;
 
 		if (n - m->nmaster > 1) {
-			/* only one client */
+			// only one client 
 			mx = (m->ww - mw) / 2;
 			tw = (m->ww - mw) / 2;
 		}
@@ -2309,14 +2308,13 @@ centeredmaster(Monitor *m)
 	ety = 0;
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 	if (i < m->nmaster) {
-		/* nmaster clients are stacked vertically, in the center
-		 * of the screen */
+		//nmaster clients are stacked vertically, in the center  of the screen 
 		h = (m->wh - my) / (MIN(n, m->nmaster) - i);
 		resize(c, m->wx + mx, m->wy + my, mw - (2*c->bw),
 		       h - (2*c->bw), 0);
 		my += HEIGHT(c);
 	} else {
-		/* stack clients are stacked vertically */
+		// stack clients are stacked vertically
 		if ((i - m->nmaster) % 2 ) {
 			h = (m->wh - ety) / ( (1 + n - i) / 2);
 			resize(c, m->wx, m->wy + ety, tw - (2*c->bw),
@@ -2330,6 +2328,7 @@ centeredmaster(Monitor *m)
 		}
 	}
 }
+*/
 
 /*
 void
@@ -2455,3 +2454,34 @@ stackpos(const Arg *arg) {
 		return arg->i;
 }
 
+static void
+bstack(Monitor *m) {
+	int w, h, mh, mx, tx, ty, tw;
+	unsigned int i, n;
+	Client *c;
+
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+	if (n > m->nmaster) {
+		mh = m->nmaster ? m->mfact * m->wh : 0;
+		tw = m->ww / (n - m->nmaster);
+		ty = m->wy + mh;
+	} else {
+		mh = m->wh;
+		tw = m->ww;
+		ty = m->wy;
+	}
+	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		if (i < m->nmaster) {
+			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
+			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), 0);
+			mx += WIDTH(c);
+		} else {
+			h = m->wh - mh;
+			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), 0);
+			if (tw != m->ww)
+				tx += WIDTH(c);
+		}
+	}
+}
