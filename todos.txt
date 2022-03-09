@@ -1,0 +1,68 @@
+------[todo]------
+[] performance
+    [] disable nvidia card
+    [] reduce framerate
+    [] reduce temprature
+    [x] prevent android daemon from startup
+    [x] reduce power consumption
+
+[] features
+    [] dragon in lf file manager
+    [] toggle lang in status bar
+    [] remaining time for the next prayer
+    [] remove pcmanfm & use lf only
+        [] usb connect 
+        [] phone connect
+    [] connect to internet via usb tethering
+    [x] dmenu theme system wide
+    [x] mount usb
+
+[] fix
+    [] wifi indicator not working 
+    [] open links in browswer (ctrl + p)
+    [] fix window screenshot
+    [] arabic for dwm & st ( write from  right to left )
+    [] calcurse-caldav sync with google calendar
+        https://calcurse.org/files/calcurse-caldav.html
+    [x] register shortcuts in arabic lang
+    [x] fix reboot windows in ~/.local/bin
+    [x] fucking piece of shit mic 
+    [x] clickable status bar ( wheel up & down on sound , toggle language , )
+    [x] autologin in user(mofasa)
+
+[] apps
+    [] syncthing
+    [] notifications
+    [] neomutt
+    [] terminal translate
+    [] suckless browser
+    [x] kde connect 
+    [x] todo 
+    [x] draw on screen  
+
+[] clean
+    [] init.sh apps is for void linux
+    [] suckless git (with symbolic links rather than the whole folder)
+    [x] show mic & volume in dwmblocks on startup
+
+[] font & lang
+    [] better font for english ( dejavu )
+------[done]------
+
+[x] theme & colors 
+    [] arc-dark theme for terminal - dwm - dmenu
+    [x] or gruvbox-dark 
+
+------[routine]------
+
+fast monday + thurusday 
+start at fajr 
+
+morning stretch 
+afternon HIIT
+night cardio ( pushup , situp , pullup , leg )
+
+minimalist clothes
+minimalist computer
+minimalist food
+
