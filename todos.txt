@@ -13,17 +13,17 @@
     [] remove pcmanfm & use lf only
         [] usb connect 
         [] phone connect
-    [] connect to internet via usb tethering
+    [] connect to internet via usb tethering & ethernet cable
     [x] dmenu theme system wide
     [x] mount usb
 
 [] fix
-    [] wifi indicator not working 
-    [] open links in browswer (ctrl + p)
+    [] open links in browser (super + p)
     [] fix window screenshot
     [] arabic for dwm & st ( write from  right to left )
     [] calcurse-caldav sync with google calendar
         https://calcurse.org/files/calcurse-caldav.html
+    [x] wifi indicator not working 
     [x] register shortcuts in arabic lang
     [x] fix reboot windows in ~/.local/bin
     [x] fucking piece of shit mic 
