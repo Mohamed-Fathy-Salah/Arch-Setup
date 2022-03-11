@@ -31,6 +31,7 @@
     [x] autologin in user(mofasa)
 
 [] apps
+    [] teams
     [] syncthing
     [] notifications
     [] neomutt
