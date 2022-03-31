@@ -1,5 +1,6 @@
 ------[todo]------
 [] performance
+    [] replace vscode with neovim
     [] disable nvidia card
     [] reduce framerate
     [] reduce temprature
@@ -7,6 +8,7 @@
     [x] reduce power consumption
 
 [] features
+    [] enable hibernation (make swap file first)
     [] dragon in lf file manager
     [] toggle lang in status bar
     [] remaining time for the next prayer
@@ -18,8 +20,9 @@
     [x] mount usb
 
 [] fix
+    [] YCM not linking the project files
     [] open links in browser (super + p)
-    [] fix window screenshot
+    [] fix window lf screenshot
     [] arabic for dwm & st ( write from  right to left )
     [] calcurse-caldav sync with google calendar
         https://calcurse.org/files/calcurse-caldav.html

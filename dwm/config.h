@@ -6,10 +6,7 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]    = {
-    "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true" ,
-    "Noto Naskh Arabic:pixelsize=16:antialias=true:autohint=true"
-};
+static const char *fonts[]    = { "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true" };
 
 //static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true";
 static const char normfgcolor[]      = "#ebdbb2";
@@ -38,6 +35,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
+	{ "Chromium",  NULL,       NULL,       1 << 0,       0,           0 },
 	{ "firefox",  NULL,       NULL,       1 << 0,       0,           0 },
 	{ "Code"   ,  NULL,       NULL,       1 << 1,       0,           0 },
 	{ "Blender",  NULL,       NULL,       1 << 2,       0,           0 },
@@ -136,10 +134,10 @@ static Key keys[] = {
 	//{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
 	{ 0,				            XK_Print,  spawn,	       SHCMD("maim -u ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -us ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -ui $(xdotool getactivewindow) ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ControlMask,				    XK_Print,  spawn,	       SHCMD("maim -u | xclip -selection clipboard -t image/png") },
 	{ ControlMask|ShiftMask,	    XK_Print,  spawn,		   SHCMD("maim -us | xclip -selection clipboard -t image/png") },
-	{ ControlMask|ALT,      		XK_Print,  spawn,		   SHCMD("maim -ui $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") },
+	{ ControlMask|ALT,      		XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") },
 
 	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle;kill -40 $(pidof dwmblocks)") },
 	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 +5%;kill -40 $(pidof dwmblocks)") },
