@@ -132,9 +132,9 @@ static Key keys[] = {
 
 	//{ 0,				            XK_Print,  spawn,	       SHCMD("maim ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
 	//{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
-	{ 0,				            XK_Print,  spawn,	       SHCMD("maim -u ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -us ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/Pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ 0,				            XK_Print,  spawn,	       SHCMD("maim -u $PICTURES/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -us $PICTURES/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) $PICTURES/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ControlMask,				    XK_Print,  spawn,	       SHCMD("maim -u | xclip -selection clipboard -t image/png") },
 	{ ControlMask|ShiftMask,	    XK_Print,  spawn,		   SHCMD("maim -us | xclip -selection clipboard -t image/png") },
 	{ ControlMask|ALT,      		XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") },
