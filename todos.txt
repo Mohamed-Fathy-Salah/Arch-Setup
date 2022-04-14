@@ -47,7 +47,7 @@
 
 [] clean
     [] init.sh apps is for void linux
-    [] dotfiles with hard links
+    [x] dotfiles with hard links
     [x] show mic & volume in dwmblocks on startup
 
 [] font & lang
