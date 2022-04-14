@@ -1,9 +1,9 @@
 ------[todo]------
 [] performance
-    [] replace vscode with neovim
     [] disable nvidia card
     [] reduce framerate
     [] reduce temprature
+    [x] replace vscode with neovim
     [x] prevent android daemon from startup
     [x] reduce power consumption
 
@@ -20,7 +20,8 @@
     [x] mount usb
 
 [] fix
-    [] YCM not linking the project files
+    [] open function in lfrc 
+    [] zsh slow loading
     [] open links in browser (super + p)
     [] fix window lf screenshot
     [] arabic for dwm & st ( write from  right to left )
@@ -46,7 +47,7 @@
 
 [] clean
     [] init.sh apps is for void linux
-    [] suckless git (with symbolic links rather than the whole folder)
+    [] dotfiles with hard links
     [x] show mic & volume in dwmblocks on startup
 
 [] font & lang

@@ -1,7 +1,7 @@
-/* See LICENSE file for copyright and license details. */
+// See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 #define TERMINAL "st"
-/* appearance */
+/* apkpearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -36,10 +36,12 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Chromium",  NULL,       NULL,       1 << 0,       0,           0 },
-	{ "firefox",  NULL,       NULL,       1 << 0,       0,           0 },
-	{ "Code"   ,  NULL,       NULL,       1 << 1,       0,           0 },
-	{ "Blender",  NULL,       NULL,       1 << 2,       0,           0 },
-	{ "discord",  NULL,       NULL,       1 << 3,       0,           0 }
+	{ "firefox" ,  NULL,       NULL,       1 << 0,       0,           0 },
+	{ "Code"    ,  NULL,       NULL,       1 << 1,       0,           0 },
+	{ "Evince"  ,  NULL,       NULL,       1 << 1,       0,           0 },
+	{ "Xournalpp"  ,  NULL,       NULL,       1 << 1,       0,           0 },
+	{ "Blender" ,  NULL,       NULL,       1 << 2,       0,           0 },
+	{ "discord" ,  NULL,       NULL,       1 << 3,       0,           0 }
 };
 
 /* layout(s) */
@@ -92,10 +94,10 @@ static Key keys[] = {
 
 	{ MODKEY,		            	XK_q,	   killclient,     {0} },
 	{ MODKEY,		            	XK_w,	   spawn,          SHCMD("$BROWSER") },
-	{ MODKEY,		            	XK_t,	   spawn,          SHCMD("$BROWSER 'https://translate.google.com.eg/?hl=ar'") },
+	{ MODKEY,		            	XK_t,	   spawn,          SHCMD("xdotool key super+1 && $BROWSER 'https://translate.google.com.eg/?hl=ar'") },
 	{ MODKEY,		            	XK_p,	   spawn,          SHCMD("$BROWSER \"$(xclip -o -selection clipboard)\"") },
 	//{ MODKEY,		            	XK_o,	   spawn,          SHCMD("$BROWSER 'https://calendar.google.com/calendar/u/0/r?pli=1'") },
-	{ MODKEY,		    	        XK_c,	   spawn,          SHCMD("$CODE") },
+	//{ MODKEY,		    	        XK_c,	   spawn,          SHCMD("$CODE") },
 	{ MODKEY,		    	        XK_v,	   spawn,          SHCMD(TERMINAL " -e $EDITOR") },
 	{ MODKEY,		            	XK_f,	   spawn,          SHCMD(TERMINAL " -e lf") },
 	{ MODKEY,          	            XK_s,      spawn,          SHCMD(TERMINAL " -e sudo htop") },
@@ -107,7 +109,7 @@ static Key keys[] = {
 	{ MODKEY|ALT,			        XK_t,	   setlayout,      {.v = &layouts[0]} }, /* tile */
 	{ MODKEY|ALT,			        XK_b,	   setlayout,      {.v = &layouts[1]} }, /* bstack */
 	{ MODKEY|ALT,    		        XK_f,	   setlayout,      {.v = &layouts[2]} }, /* float */
-	{ MODKEY|ALT,			        XK_m,	   togglefullscr,  {0} },
+	{ 0,			                XK_F11,	   togglefullscr,  {0} },
 
 	{ MODKEY|ALT,	                XK_i,	   incnmaster,     {.i = +1 } },
 	{ MODKEY|ALT,	                XK_u,	   incnmaster,     {.i = -1 } },
@@ -118,7 +120,9 @@ static Key keys[] = {
 	{ MODKEY,	            		XK_Return, spawn,		   {.v = termcmd } },
 	{ MODKEY,			            XK_d,	   spawn,          {.v = dmenucmd} },
 
-	{ MODKEY|ALT,			        XK_q,	   spawn,          SHCMD("quit") },
+    //{ MODKEY,			            XK_Escape, spawn,          SHCMD("quit") },
+    { ALT,	    		            XK_F4,     spawn,          SHCMD("quit") },
+    { ALT,  			            XK_F2,     spawn,          SHCMD("killall dwm") },
 
 	{ MODKEY,			            XK_j,	   shiftview,      { .i = -1 } },
 	{ MODKEY,			            XK_k,	   shiftview,      { .i = +1 } },
@@ -156,7 +160,7 @@ static Key keys[] = {
 	//{ 0, XF86XK_PowerOff,	    	spawn,	   SHCMD("sysact") },
 	{ 0, XF86XK_Calculator,	    	spawn,	   SHCMD(TERMINAL " -e bc -ql") },
 	//{ 0, XF86XK_MyComputer,		    spawn,     SHCMD(TERMINAL " -e lf /") },
-    
+
 	//{ 0, XF86XK_TouchpadToggle,	spawn,		SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
 	//{ 0, XF86XK_TouchpadOff,	spawn,		SHCMD("synclient TouchpadOff=1") },
 	//{ 0, XF86XK_TouchpadOn,		spawn,		SHCMD("synclient TouchpadOff=0") },
