@@ -8,17 +8,12 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]    = { "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true" };
 
-//static const char dmenufont[] =  "SauceCodePro Nerd Font:pixelsize=16:antialias=true:autohint=true";
 static const char normfgcolor[]      = "#ebdbb2";
 static const char normbgcolor[]      = "#282828";
-//static const char normbgcolor[]      = "#000000";
-//static const char normbordercolor[]  = "#928374";
 static const char normbordercolor[]  = "#000000";
-//static const char selfgcolor[]       = "#3281ea";
-static const char selfgcolor[]       = "#f88827";
+static const char selfgcolor[]       = "#3281ea";
 static const char selbgcolor[]       = "#282828";
-//static const char selbordercolor[]   = "#3281ea";
-static const char selbordercolor[]   = "#f88827";
+static const char selbordercolor[]   = "#3281ea";
 static const char *colors[][3]       = {
     /*                fg            bg              border           */
     [SchemeNorm]  = { normfgcolor,  normbgcolor,    normbordercolor  },
@@ -71,16 +66,11 @@ static const Layout layouts[] = {
     { MOD,  XK_l,   ACTION##stack,  {.i = INC(+1) } }, \
     { MOD,  XK_h,   ACTION##stack,  {.i = INC(-1) } }, \
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
 #define STATUSBAR "dwmblocks"
 
-static char dmenumon[2] = "0";
+//static char dmenumon[2] = "0";
 //static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *dmenucmd[] = { "dmenu_run"};
-
-static const char *termcmd[]  = { "st", NULL };
+//static const char *dmenucmd[] = { "dmenu_run"};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -93,18 +83,6 @@ static Key keys[] = {
 	TAGKEYS(		    	        XK_4,	   3)
 
 	{ MODKEY,		            	XK_q,	   killclient,     {0} },
-	{ MODKEY,		            	XK_w,	   spawn,          SHCMD("$BROWSER") },
-	{ MODKEY,		            	XK_t,	   spawn,          SHCMD("xdotool key super+1 && $BROWSER 'https://translate.google.com.eg/?hl=ar'") },
-	{ MODKEY,		            	XK_p,	   spawn,          SHCMD("$BROWSER \"$(xclip -o -selection clipboard)\"") },
-	//{ MODKEY,		            	XK_o,	   spawn,          SHCMD("$BROWSER 'https://calendar.google.com/calendar/u/0/r?pli=1'") },
-	//{ MODKEY,		    	        XK_c,	   spawn,          SHCMD("$CODE") },
-	{ MODKEY,		    	        XK_v,	   spawn,          SHCMD(TERMINAL " -e $EDITOR") },
-	{ MODKEY,		            	XK_f,	   spawn,          SHCMD(TERMINAL " -e lf") },
-	{ MODKEY,          	            XK_s,      spawn,          SHCMD(TERMINAL " -e sudo htop") },
-	{ MODKEY,                       XK_m,	   spawn,	       SHCMD(TERMINAL " -e ncmpcpp") },
-	{ MODKEY,		            	XK_o,	   spawn,          SHCMD(TERMINAL " -e calcurse") },
-
-	{ MODKEY,          	            XK_space,  spawn,          SHCMD("kill -42 $(pidof dwmblocks)") },
 
 	{ MODKEY|ALT,			        XK_t,	   setlayout,      {.v = &layouts[0]} }, /* tile */
 	{ MODKEY|ALT,			        XK_b,	   setlayout,      {.v = &layouts[1]} }, /* bstack */
@@ -116,13 +94,6 @@ static Key keys[] = {
 
 	{ MODKEY,                       XK_i,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_u,      setmfact,       {.f = -0.05} },
-
-	{ MODKEY,	            		XK_Return, spawn,		   {.v = termcmd } },
-	{ MODKEY,			            XK_d,	   spawn,          {.v = dmenucmd} },
-
-    //{ MODKEY,			            XK_Escape, spawn,          SHCMD("quit") },
-    { ALT,	    		            XK_F4,     spawn,          SHCMD("quit") },
-    { ALT,  			            XK_F2,     spawn,          SHCMD("killall dwm") },
 
 	{ MODKEY,			            XK_j,	   shiftview,      { .i = -1 } },
 	{ MODKEY,			            XK_k,	   shiftview,      { .i = +1 } },
@@ -136,37 +107,6 @@ static Key keys[] = {
 
 	//{ 0,				            XK_Print,  spawn,	       SHCMD("maim ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
 	//{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png ;cat ~/pictures/pic-full-$(date '+%y%m%d-%H%M-%S').png | xclip -selection clipboard -t image/png") },
-	{ 0,				            XK_Print,  spawn,	       SHCMD("maim -u $PICTURES/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ShiftMask,		            XK_Print,  spawn,		   SHCMD("maim -us $PICTURES/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ALT,      		            XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) $PICTURES/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ControlMask,				    XK_Print,  spawn,	       SHCMD("maim -u | xclip -selection clipboard -t image/png") },
-	{ ControlMask|ShiftMask,	    XK_Print,  spawn,		   SHCMD("maim -us | xclip -selection clipboard -t image/png") },
-	{ ControlMask|ALT,      		XK_Print,  spawn,		   SHCMD("maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") },
-
-	{ 0, XF86XK_AudioMute,		    spawn,	   SHCMD("pactl set-sink-mute 0 toggle;kill -40 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 +5%;kill -40 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,	   SHCMD("pactl set-sink-volume 0 -5%;kill -40 $(pidof dwmblocks)") },
-
-	{ MODKEY, XF86XK_AudioMute,   	spawn,	   SHCMD("pactl set-source-mute 0 toggle;kill -41 $(pidof dwmblocks)") },
-	{ MODKEY, XF86XK_AudioRaiseVolume,	spawn, SHCMD("pactl set-source-volume 0 +5%;kill -41 $(pidof dwmblocks)") },
-	{ MODKEY, XF86XK_AudioLowerVolume,	spawn, SHCMD("pactl set-source-volume 0 -5%;kill -41 $(pidof dwmblocks)") },
-
-	{ 0, XF86XK_AudioPrev,	        spawn,	   SHCMD("mpc prev") },
-	{ 0, XF86XK_AudioNext,	        spawn,	   SHCMD("mpc next") },
-    { 0, XF86XK_AudioPlay,	        spawn,	   SHCMD("mpc toggle") },
-	{ 0, XF86XK_AudioStop,	        spawn,	   SHCMD("mpc stop") },
-	{ MODKEY,XK_bracketleft,        spawn,	   SHCMD("mpc seek -10") },
-	{ MODKEY,XK_bracketright,   	spawn,	   SHCMD("mpc seek +10") },
-	//{ 0, XF86XK_PowerOff,	    	spawn,	   SHCMD("sysact") },
-	{ 0, XF86XK_Calculator,	    	spawn,	   SHCMD(TERMINAL " -e bc -ql") },
-	//{ 0, XF86XK_MyComputer,		    spawn,     SHCMD(TERMINAL " -e lf /") },
-
-	//{ 0, XF86XK_TouchpadToggle,	spawn,		SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
-	//{ 0, XF86XK_TouchpadOff,	spawn,		SHCMD("synclient TouchpadOff=1") },
-	//{ 0, XF86XK_TouchpadOn,		spawn,		SHCMD("synclient TouchpadOff=0") },
-	{ 0, XF86XK_MonBrightnessUp,	spawn,     SHCMD("xbacklight -inc 5") },
-	{ 0, XF86XK_MonBrightnessDown,	spawn,	   SHCMD("xbacklight -dec 5") },
-
 };
 
 /* button definitions */
