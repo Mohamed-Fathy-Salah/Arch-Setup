@@ -1,6 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 /* Default settings; can be overriden by command line. */
 
+#include "../theme.h"
+
 static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
@@ -9,8 +11,8 @@ static const char *fonts[] = {
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 static const char *colors[SchemeLast][2] = {
 	            /*     fg         bg       */
-	[SchemeNorm] = { "#ebdbb2", "#282828" },
-	[SchemeSel] = { "#3281ea", "#282828" },
+	[SchemeNorm] = { "#ebdbb2", BG_COLOR },
+	[SchemeSel] = { FG_COLOR, ORCHIS_GREY },
 	[SchemeOut] = { "#000000", "#00ffff" },
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */

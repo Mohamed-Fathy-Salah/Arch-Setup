@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include "../theme.h"
 
 /*
  * appearance
@@ -19,7 +20,7 @@ static int borderpx = 2;
 static char *shell = "/bin/zsh";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
-char *scroll = NULL;
+char *scroll = "scroll";
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
 /* identification sequence returned in DA and DECID */
@@ -96,11 +97,11 @@ unsigned int tabspaces = 8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
  	/* 8 normal colors */
-	[0] = "#282828", /* hard contrast: #1d2021 / soft contrast: #32302f */
+	[0] = ORCHIS_GREY , /* hard contrast: #1d2021 / soft contrast: #32302f */
 	[1] = "#cc241d", /* red     */
-	[2] = "#98971a", /* green   */
+	[2] = ORCHIS_GREEN, /* green   */
 	[3] = "#fdd633", /* yellow  */
-	[4] = "#3281ea", /* blue    */
+	[4] = ORCHIS_BLUE, /* blue    */
 	[5] = "#b16286", /* magenta */
 	[6] = "#689d6a", /* cyan    */
 	[7] = "#a89984", /* white   */
@@ -167,6 +168,8 @@ static uint forcemousemod = ShiftMask;
  */
 static MouseShortcut mshortcuts[] = {
     /* mask                 button   function        argument       release */
+	{XK_ANY_MOD,            Button4, ttysend,       {.s = "\031"}},
+	{XK_ANY_MOD,            Button5, ttysend,       {.s = "\005"}},
 };
 
 /* Internal keyboard shortcuts. */

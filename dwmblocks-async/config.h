@@ -5,6 +5,7 @@
 const Block blocks[] = {
 	BLOCK("sb-date",    0,    1),
 	BLOCK("sb-time",    60,   2),
+    BLOCK("sb-prayer",  60,   10),
 	BLOCK("sb-memory",  5,    3),
 	BLOCK("sb-loadavg", 5,    4),
 	BLOCK("sb-temp",    5,    5),
