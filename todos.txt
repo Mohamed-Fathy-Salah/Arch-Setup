@@ -8,7 +8,6 @@
     [x] reduce power consumption
 
 [] features
-    [] tesseract (ocr) with screenshots
     [] contribue to xournalpp (change color with shortcuts)
     [] enable hibernation (make swap file first)
     [] toggle lang in status bar
@@ -16,6 +15,7 @@
         [] usb connect 
         [] phone connect
     [] connect to internet via usb tethering & ethernet cable
+    [x] tesseract (ocr) with screenshots
     [x] remaining time for the next prayer
     [x] dragon in lf file manager
     [x] dmenu theme system wide
@@ -37,11 +37,11 @@
     [x] autologin in user(mofasa)
 
 [] apps
-    [] rofi (quit, calc, wifi, ...)
     [] syncthing
     [] neomutt
     [] terminal translate
     [] suckless browser
+    [] rofi (quit, calc, wifi, ...)
     [x] notifications
     [x] teams
     [x] kde connect 
